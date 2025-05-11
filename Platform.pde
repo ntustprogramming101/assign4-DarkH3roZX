@@ -2,6 +2,7 @@ class Platform {
   float x, y, w = 80, h = 20, speed = 2; // Position, size, and speed of the platform
   boolean recycleFlag = false; // Flag to indicate if the platform needs recycling
   boolean playedSound = false; // Flag to indicate if the sound has been played
+  boolean interacted = false;
 
   Platform(float tempX, float tempY) {
     x = tempX;
@@ -13,6 +14,10 @@ class Platform {
     if (y < -h) {
       recycleFlag = true; // Mark the platform for recycling
     }
+    
+    if (player.y + 10 > y) {
+      interacted = false;
+    }
   }
 
   void interact(Player player) {
@@ -21,11 +26,17 @@ class Platform {
     player.y -= speed; // Move the player up with the platform
     
     // Practice4: Avoid sound being repeatedly played
-
+    if (!interacted) {
+      playPlatformSound();
+      interacted = true;
+    }
   }
 
   void display() {
     image(platformImage, x, y, w, h); // Draw the platform
   }
-
+  
+  void playPlatformSound() {
+    platformSound.play(); // Play the bouncy platform sound
+  }
 }
